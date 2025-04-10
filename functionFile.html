@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+  <script>
+    Office.onReady(info => {
+      if (info.host === Office.HostType.Outlook) {
+        console.log("Outlook add-in is ready.");
+      }
+    });
+
+    function convertToTemplate(event) {
+      Office.context.mailbox.item.body.getAsync("html", function (result) {
+        if (result.status === Office.AsyncResultStatus.Succeeded) {
+          const emailHtml = result.value;
+
+          fetch("https://e7f91d5c-56b0-46c1-a9cf-b6aa64394754-00-3bcv8n1sfv6rz.spock.replit.dev/api/email-templates", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-API-Key": "67d8a0df-ba97-4c43-b1f6-9c2ef2f4c3a1"
+            },
+            body: JSON.stringify({ html: emailHtml })
+          })
+          .then(response => {
+            if (response.ok) {
+              console.log("Email sent successfully.");
+              Office.context.ui.displayDialogAsync("https://crepich.github.io/Ninjio-Outlook-Addin/success.html", { height: 30, width: 20 });
+            } else {
+              console.error("Failed to send email content.");
+              Office.context.ui.displayDialogAsync("https://crepich.github.io/Ninjio-Outlook-Addin/error.html", { height: 30, width: 20 });
+            }
+          })
+          .catch(error => {
+            console.error("Fetch error:", error);
+            Office.context.ui.displayDialogAsync("https://crepich.github.io/Ninjio-Outlook-Addin/error.html", { height: 30, width: 20 });
+          });
+        } else {
+          console.error("Failed to get email body:", result.error.message);
+        }
+
+        event.completed();
+      });
+    }
+  </script>
+</head>
+<body>
+</body>
+</html>
