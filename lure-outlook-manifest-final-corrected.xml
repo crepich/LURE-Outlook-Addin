@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+           xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
+           xsi:type="TaskPaneApp">
+  <Id>b71a5ae8-cf5e-4dcd-bbfb-081234567891</Id>
+  <Version>1.0.0.0</Version>
+  <ProviderName>LURE</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName DefaultValue="LURE Test Add-in"/>
+  <Description DefaultValue="Test manifest with correct icon referencing"/>
+  <IconUrl>https://crepich.github.io/Ninjio-Outlook-Addin/lure-icon-32.png</IconUrl>
+  <SupportUrl>https://your-app.example.com/support</SupportUrl>
+  <Hosts>
+    <Host Name="Mailbox"/>
+  </Hosts>
+  <Requirements>
+    <Sets>
+      <Set Name="Mailbox" MinVersion="1.1"/>
+    </Sets>
+  </Requirements>
+  <Resources>
+    <bt:Images>
+      <bt:Image id="icon16" DefaultValue="https://crepich.github.io/Ninjio-Outlook-Addin/lure-icon-16.png"/>
+      <bt:Image id="icon32" DefaultValue="https://crepich.github.io/Ninjio-Outlook-Addin/lure-icon-32.png"/>
+      <bt:Image id="icon64" DefaultValue="https://crepich.github.io/Ninjio-Outlook-Addin/lure-icon-64.png"/>
+    </bt:Images>
+    <bt:Urls>
+      <bt:Url id="taskpaneUrl" DefaultValue="https://crepich.github.io/Ninjio-Outlook-Addin/taskpane.html"/>
+    </bt:Urls>
+  </Resources>
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
+                    xsi:type="VersionOverridesV1_0"
+                    Version="1.0">
+    <Hosts>
+      <Host Name="Mailbox">
+        <ExtensionPoint xsi:type="MessageReadCommandSurface">
+          <OfficeTab id="TabDefault">
+            <Group Label="LURE">
+              <Control xsi:type="Button" id="btnOpenPane">
+                <Label>Convert to Template</Label>
+                <Supertip>Send this email to LURE</Supertip>
+                <Icon>icon32</Icon>
+                <Action xsi:type="ShowTaskpane">
+                  <SourceLocation DefaultValue="https://crepich.github.io/Ninjio-Outlook-Addin/taskpane.html"/>
+                </Action>
+              </Control>
+            </Group>
+          </OfficeTab>
+        </ExtensionPoint>
+      </Host>
+    </Hosts>
+  </VersionOverrides>
+  <Permissions>ReadItem</Permissions>
+</OfficeApp>
