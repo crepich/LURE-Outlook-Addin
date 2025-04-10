@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>NINJIO Outlook Add-in</title>
+  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+</head>
+<body>
+  <h1>NINJIO Email Export</h1>
+  <button id="sendButton">Send to NINJIO</button>
+  <script>
+    Office.onReady(function () {
+      document.getElementById("sendButton").onclick = function () {
+        Office.context.mailbox.item.body.getAsync(Office.CoercionType.Html, function (result) {
+          if (result.status === Office.AsyncResultStatus.Succeeded) {
+            const emailHtml = result.value;
+
+            fetch("https://your-app.example.com/api/email", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "X-API-Key": "67d8a0df-ba97-4c43-b1f6-9c2ef2f4c3a1"
+              },
+              body: JSON.stringify({ emailHtml: emailHtml })
+            })
+            .then(res => {
+              if (res.ok) {
+                alert("Email sent successfully to NINJIO!");
+              } else {
+                alert("Failed to send email.");
+              }
+            })
+            .catch(err => {
+              console.error("Error sending email:", err);
+              alert("Network error.");
+            });
+          } else {
+            console.error("Failed to get email body:", result.error.message);
+          }
+        });
+      };
+    });
+  </script>
+</body>
+</html>
